@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/linzengfa/mgtool/mxsha"
+	"github.com/linzengfa/mxtool/mxsha"
 	"io/ioutil"
 	"net/http"
 	"strings"

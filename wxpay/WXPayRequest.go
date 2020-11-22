@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: WXPayRequest.go
-** @Author: MoXiao
-** @Date:   2018/10/16 9:44
-** @Last Modified by:  MoXiao
-** @Last Modified time: 2018/10/16 9:44
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXPayRequest.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package wxpay
 
 import (

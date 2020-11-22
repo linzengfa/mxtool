@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: WXPayErrors.go
-** @Author: MoXiao
-** @Date:   2018/10/16 9:43
-** @Last Modified by:  MoXiao
-** @Last Modified time: 2018/10/16 9:43
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXPayErrors.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package wxpay
 
 import "errors"

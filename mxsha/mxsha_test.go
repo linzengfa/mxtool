@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: mxsha_test.go
-** @Author: moxiao
-** @Date:   2020/6/20 22:44
-** @Last Modified by:  moxiao
-** @Last Modified time: 2020/6/20 22:44
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description mxsha_test.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package mxsha
 
 import "testing"

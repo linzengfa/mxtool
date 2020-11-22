@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: mxqr.go
-** @Author: moxiao
-** @Date:   2020/9/29 14:04
-** @Last Modified by:  moxiao
-** @Last Modified time: 2020/9/29 14:04
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description mxqr.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package mxqr
 
 import (

@@ -1,14 +1,13 @@
-/**********************************************
-** @Des: WXPayUtil_test.go
-** @Author: MoXiao
-** @Date:   2018/10/16 17:19
-** @Last Modified by:  MoXiao
-** @Last Modified time: 2018/10/16 17:19
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXPayUtil_test.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package wxpay
 
 import (
-	"github.com/linzengfa/mgtool/mgconv"
+	"github.com/linzengfa/mxtool/mxconv"
 	"testing"
 )
 
@@ -23,7 +22,7 @@ func TestCreateOutTradeNo(t *testing.T) {
 
 func TestStructToMap(t *testing.T) {
 	po := unifiedOrderRespond{}
-	m := mgconv.StructToMap(po)
+	m := mxconv.StructToMap(po)
 
 	t.Log(m["Sign"])
 
@@ -37,7 +36,7 @@ func Test_createSignString(t *testing.T) {
 	data1.DeviceInfo = "1000"
 	data1.NonceStr = "ibuaiVcKdpRxkhJA"
 	data1.ErrCode = "success"
-	gotSign := createSignString(mgconv.StructToMap(data1))
+	gotSign := createSignString(mxconv.StructToMap(data1))
 	wantSign := "appid=wxd930ea5d5a258f4f&body=test&device_info=1000&mch_id=10000100&nonce_str=ibuaiVcKdpRxkhJA&key=192006250b4c09247ec02edce69f6a2d"
 	if gotSign != wantSign {
 		t.Fatalf("createSignString error,want[%s],got[%s]", wantSign, gotSign)
@@ -52,7 +51,7 @@ func Test_sign(t *testing.T) {
 	data1.DeviceInfo = "1000"
 	data1.NonceStr = "ibuaiVcKdpRxkhJA"
 	data1.Body = "test"
-	gotSign, err := sign(mgconv.StructToMapWithTag(data1, DEFAULT_TAG), "192006250b4c09247ec02edce69f6a2d")
+	gotSign, err := sign(mxconv.StructToMapWithTag(data1, DEFAULT_TAG), "192006250b4c09247ec02edce69f6a2d")
 	if err != nil {
 		t.Fatal(err.Error())
 	}
@@ -71,7 +70,7 @@ func Test_sign_2(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	gotSign, err := sign(mgconv.StructToMapWithTag(data1, DEFAULT_TAG), "96e79218965eb72c92a549dd5a330112")
+	gotSign, err := sign(mxconv.StructToMapWithTag(data1, DEFAULT_TAG), "96e79218965eb72c92a549dd5a330112")
 	if err != nil {
 		t.Fatal(err.Error())
 	}

@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: WXPayXmlUtil_test.go
-** @Author: MoXiao
-** @Date:   2018/10/16 17:21
-** @Last Modified by:  MoXiao
-** @Last Modified time: 2018/10/16 17:21
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXPayXmlUtil_test.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package wxpay
 
 import (

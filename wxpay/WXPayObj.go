@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: WXPayObj.go
-** @Author: MoXiao
-** @Date:   2018/10/16 9:53
-** @Last Modified by:  MoXiao
-** @Last Modified time: 2018/10/16 9:53
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXPayObj.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package wxpay
 
 import "net/http"

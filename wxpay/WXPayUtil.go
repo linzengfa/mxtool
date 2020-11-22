@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: WXPayUtil.go
-** @Author: MoXiao
-** @Date:   2018/10/16 9:44
-** @Last Modified by:  MoXiao
-** @Last Modified time: 2018/10/16 9:44
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXPayUtil.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package wxpay
 
 import (
@@ -13,8 +12,8 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"github.com/linzengfa/mgtool/mgconv"
-	"github.com/linzengfa/mgtool/mgmd5"
+	"github.com/linzengfa/mxtool/mxconv"
+	"github.com/linzengfa/mxtool/mxmd5"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -67,7 +66,7 @@ func signStruct(data interface{}, key string) (signResult string, err error) {
 		err = WXPAY_REQ_PARAMT_ERROR
 		return
 	}
-	mapData := mgconv.StructToMapWithTag(data, DEFAULT_TAG)
+	mapData := mxconv.StructToMapWithTag(data, DEFAULT_TAG)
 	return sign(mapData, key)
 }
 
@@ -87,7 +86,7 @@ func sign(data map[string]interface{}, key string) (signResult string, err error
 	}
 	fmt.Println("签名字符串：")
 	fmt.Println(buf.String())
-	md5Value := mgmd5.Md5(buf.Bytes())
+	md5Value := mxmd5.Md5(buf.Bytes())
 	signResult = strings.ToUpper(md5Value)
 	return
 }

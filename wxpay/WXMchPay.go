@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: WXMchPay.go
-** @Author: moxiao
-** @Date:   2019/8/18 21:11
-** @Last Modified by:  moxiao
-** @Last Modified time: 2019/8/18 21:11
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXMchPay.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package wxpay
 
 import (

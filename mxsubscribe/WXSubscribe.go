@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: WXSubscribe.go
-** @Author: moxiao
-** @Date:   2020/7/11 15:50
-** @Last Modified by:  moxiao
-** @Last Modified time: 2020/7/11 15:50
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXSubscribe.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package mxsubscribe
 
 import (

@@ -1,10 +1,9 @@
-/**********************************************
-** @Des: WXMchConstants.go
-** @Author: moxiao
-** @Date:   2019/9/22 17:52
-** @Last Modified by:  moxiao
-** @Last Modified time: 2019/9/22 17:52
-***********************************************/
+// Copyright (c) 2020.
+// ALL Rights reserved.
+// @Description WXMchConstants.go
+// @Author moxiao
+// @Date 2020/11/22 10:19
+
 package wxpay
 
 const (

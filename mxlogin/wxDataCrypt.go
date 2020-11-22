@@ -10,7 +10,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"mxaes"
+	"github.com/linzengfa/mxtool/mxaes"
 )
 
 type wxDataCrypt struct {
