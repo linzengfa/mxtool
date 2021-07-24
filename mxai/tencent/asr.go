@@ -21,8 +21,8 @@ import (
 //usrAudioKey：用户端对此任务的唯一标识，用户自助生成
 func (mx *MXAi) Sentence(voiceData string, voiceDataLen int64, voiceURL string, sourceType uint64,
 	voiceFormat string, usrAudioKey string) (content string, err error) {
-	if (SOURCE_TYPE_URL == sourceType && len(voiceURL) == 0) ||
-		(SOURCE_TYPE_DATA == sourceType && (len(voiceData) == 0 || voiceDataLen < 0)) ||
+	if (SourceTypeUrl == sourceType && len(voiceURL) == 0) ||
+		(SourceTypeData == sourceType && (len(voiceData) == 0 || voiceDataLen < 0)) ||
 		len(voiceFormat) == 0 || len(usrAudioKey) == 0 {
 		err = MXAI_PARAM_ERROR
 		return
@@ -32,13 +32,13 @@ func (mx *MXAi) Sentence(voiceData string, voiceDataLen int64, voiceURL string, 
 	// 实例化一个请求对象
 	request := v20180522.NewSentenceRecognitionRequest()
 	//设置请求参数
-	request.ProjectId = common.Uint64Ptr(0)                              // 腾讯云项目 ID
-	request.SubServiceType = common.Uint64Ptr(SUB_SERVICE_TYPE_SENTENCE) // 子服务类型
-	request.EngSerViceType = common.StringPtr(ENGSERVICETYPE_16K)        // 引擎类型
-	request.SourceType = common.Uint64Ptr(sourceType)                    // 语音数据来源。0：语音 URL；1：语音数据（post body）
-	request.VoiceFormat = common.StringPtr(voiceFormat)                  // 识别音频的音频格式（支持mp3,wav）
-	request.UsrAudioKey = common.StringPtr(usrAudioKey)                  // 用户端对此任务的唯一标识
-	if SOURCE_TYPE_URL == sourceType {
+	request.ProjectId = common.Uint64Ptr(0)                           // 腾讯云项目 ID
+	request.SubServiceType = common.Uint64Ptr(SubServiceTypeSentence) // 子服务类型
+	request.EngSerViceType = common.StringPtr(EngServiceType16k)      // 引擎类型
+	request.SourceType = common.Uint64Ptr(sourceType)                 // 语音数据来源。0：语音 URL；1：语音数据（post body）
+	request.VoiceFormat = common.StringPtr(voiceFormat)               // 识别音频的音频格式（支持mp3,wav）
+	request.UsrAudioKey = common.StringPtr(usrAudioKey)               // 用户端对此任务的唯一标识
+	if SourceTypeUrl == sourceType {
 		request.Url = common.StringPtr(voiceURL) // 语音 URL，公网可下载
 	} else {
 		request.Data = common.StringPtr(voiceData)      // 语音数据，base64编码

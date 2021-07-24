@@ -43,29 +43,29 @@ func (mg *MGAi) GetAccessToken() (token string, err error) {
 	if err != nil {
 		return
 	}
-	if _, ok := resultMap[MGOCR_RETURN_ERRCODE_KEY]; ok {
-		errmsg := fmt.Sprintf("GetAccessToken errors，errcode=%v,errmsg=%v", resultMap[MGOCR_RETURN_ERRCODE_KEY], resultMap[MGOCR_RETURN_ERRMSG_KEY])
+	if _, ok := resultMap[ReturnErrorCodeKey]; ok {
+		errmsg := fmt.Sprintf("GetAccessToken errors，errcode=%v,errmsg=%v", resultMap[ReturnErrorCodeKey], resultMap[ReturnErrorMsgKey])
 		err = errors.New(errmsg)
 		return
 	}
-	if _, ok := resultMap[MGOCR_RETURN_ACCESS_TOKEN_KEY]; !ok {
+	if _, ok := resultMap[ReturnAccessTokenKey]; !ok {
 		err = errors.New("GetAccessToken errors,access_token does not exist")
 		return
 	}
-	return resultMap[MGOCR_RETURN_ACCESS_TOKEN_KEY].(string), nil
+	return resultMap[ReturnAccessTokenKey].(string), nil
 }
 
 //身份证（正面）识别
 //image-必填，图像数据，base64编码后进行urlencode，要求base64编码和urlencode后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
 func (mg *MGAi) IdCardFront(image, accessToken string) (idCardFront *IdCardFront, err error) {
 	if len(image) == 0 || len(accessToken) == 0 {
-		return nil, MXAI_PARAM_ERROR
+		return nil, MxAIParamError
 	}
-	requestURL := fmt.Sprintf("%s?access_token=%s", IDCARD_URL, accessToken)
+	requestURL := fmt.Sprintf("%s?access_token=%s", IDCardURL, accessToken)
 	v := url.Values{}
 	v.Add("id_card_side", "front")
 	v.Add("image", image)
-	resp, err := http.Post(requestURL, CONTENT_TYPE_URLENCODED, strings.NewReader(v.Encode()))
+	resp, err := http.Post(requestURL, ContentTypeUrlencoded, strings.NewReader(v.Encode()))
 	defer resp.Body.Close()
 	if err != nil {
 		return
@@ -79,18 +79,18 @@ func (mg *MGAi) IdCardFront(image, accessToken string) (idCardFront *IdCardFront
 	if err != nil {
 		return
 	}
-	if _, ok := resultMap[MGOCR_RETURN_ERRCODE_KEY]; ok {
-		errmsg := fmt.Sprintf("%v-%v", resultMap[MGOCR_RETURN_ERRCODE_KEY], resultMap[MGOCR_RETURN_ERRMSG_KEY])
+	if _, ok := resultMap[ReturnErrorCodeKey]; ok {
+		errmsg := fmt.Sprintf("%v-%v", resultMap[ReturnErrorCodeKey], resultMap[ReturnErrorMsgKey])
 		err = errors.New(errmsg)
 		return
 	}
-	if _, ok := resultMap[MGOCR_RETURN_WORDS_RESULT_KEY]; !ok {
-		err = MGOCR_IDCARD_INFO_ERROR
+	if _, ok := resultMap[ReturnWordsResultKey]; !ok {
+		err = ErrIDCardInfoEmpty
 		return
 	}
-	wordsResult, ok := resultMap[MGOCR_RETURN_WORDS_RESULT_KEY].(map[string]interface{})
+	wordsResult, ok := resultMap[ReturnWordsResultKey].(map[string]interface{})
 	if !ok {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 	return analysisIdCardFont(wordsResult)
@@ -98,74 +98,74 @@ func (mg *MGAi) IdCardFront(image, accessToken string) (idCardFront *IdCardFront
 
 func analysisIdCardFont(wordsResult map[string]interface{}) (idCardFront *IdCardFront, err error) {
 	if _, ok := wordsResult["公民身份号码"]; !ok {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 	if _, ok := wordsResult["性别"]; !ok {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 	if _, ok := wordsResult["民族"]; !ok {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 	if _, ok := wordsResult["住址"]; !ok {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 	if _, ok := wordsResult["出生"]; !ok {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 	if _, ok := wordsResult["姓名"]; !ok {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 	idNumMap, _ := wordsResult["公民身份号码"].(map[string]interface{})
 	idNum, ok := idNumMap["words"].(string)
 	if !ok || len(idNum) == 0 {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 
 	sexMap, _ := wordsResult["性别"].(map[string]interface{})
 	sex, ok := sexMap["words"].(string)
 	if !ok || len(sex) == 0 {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 	nationMap, _ := wordsResult["民族"].(map[string]interface{})
 	nation, ok := nationMap["words"].(string)
 
 	if !ok || len(nation) == 0 {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 
 	birthDayMap, _ := wordsResult["出生"].(map[string]interface{})
 	birthDay, ok := birthDayMap["words"].(string)
 	if !ok || len(birthDay) == 0 {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 
 	addressMap, _ := wordsResult["住址"].(map[string]interface{})
 	address, ok := addressMap["words"].(string)
 	if !ok || len(address) == 0 {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 
 	userNameMap, _ := wordsResult["姓名"].(map[string]interface{})
 	userName, ok := userNameMap["words"].(string)
 	if !ok || len(userName) == 0 {
-		err = MGOCR_IDCARD_INFO_ERROR
+		err = ErrIDCardInfoEmpty
 		return
 	}
 
 	birthPlace := ""
 	var areaCodeMap map[string]string
-	if err := json.Unmarshal([]byte(AREA_CODE), &areaCodeMap); err == nil {
+	if err := json.Unmarshal([]byte(AreaCode), &areaCodeMap); err == nil {
 		area, ok := areaCodeMap[idNum[0:6]]
 		if ok && len(area) != 0 {
 			birthPlace = area

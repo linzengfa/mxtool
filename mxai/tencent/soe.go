@@ -41,7 +41,7 @@ func (mx *MXAi) OralProcess(userVoiceData string, voiceFileType int64, refText s
 	request.IsAsync = common.Int64Ptr(0)
 	// 设置base64加密后的语音数据
 	request.UserVoiceData = common.StringPtr(userVoiceData)
-	request.SetHttpMethod(METHOD_POST)
+	request.SetHttpMethod(MethodPost)
 
 	response := v20180724.NewTransmitOralProcessWithInitResponse()
 	err = client.Send(request, response)

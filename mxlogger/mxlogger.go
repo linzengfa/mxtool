@@ -14,11 +14,11 @@ import (
 )
 
 const (
-	LOGGER_MAX_SIZE         = 20         //每个日志文件保存的最大尺寸 单位：M
-	LOGGER_MAX_BACKUPS      = 30         //日志文件最多保存多少个备份
-	LOGGER_MAX_AGE          = 30         //文件最多保存多少天
-	LOGGER_COMPRESS         = true       //是否压缩
-	DEFAULT_LOGGER_FILEPATH = "/var/log" //默认文件存储路径
+	LoggerMaxSize         = 20         //每个日志文件保存的最大尺寸 单位：M
+	LoggerMaxBackups      = 30         //日志文件最多保存多少个备份
+	LoggerMaxAge          = 30         //文件最多保存多少天
+	LoggerCompress        = true       //是否压缩
+	DefaultLoggerFilepath = "/var/log" //默认文件存储路径
 )
 
 var levelMap = map[string]zapcore.Level{
@@ -34,18 +34,18 @@ var levelMap = map[string]zapcore.Level{
 //创建日志对象
 func NewLoggerDefault(日志目录 string, 日志文件名 string, 日志级别 string, 服务名 string) *zap.Logger {
 	if len(日志目录) == 0 {
-		日志目录 = DEFAULT_LOGGER_FILEPATH
+		日志目录 = DefaultLoggerFilepath
 	}
 
 	日志文件路径 := 日志目录 + "/" + 日志文件名
 
 	//日志文件路径配置2
 	hook := lumberjack.Logger{
-		Filename:   日志文件路径,             // 日志文件路径
-		MaxSize:    LOGGER_MAX_SIZE,    // 每个日志文件保存的最大尺寸 单位：M
-		MaxBackups: LOGGER_MAX_BACKUPS, // 日志文件最多保存多少个备份
-		MaxAge:     LOGGER_MAX_AGE,     // 文件最多保存多少天
-		Compress:   LOGGER_COMPRESS,    // 是否压缩
+		Filename:   日志文件路径,           // 日志文件路径
+		MaxSize:    LoggerMaxSize,    // 每个日志文件保存的最大尺寸 单位：M
+		MaxBackups: LoggerMaxBackups, // 日志文件最多保存多少个备份
+		MaxAge:     LoggerMaxAge,     // 文件最多保存多少天
+		Compress:   LoggerCompress,   // 是否压缩
 	}
 	w := zapcore.AddSync(&hook)
 
@@ -57,7 +57,7 @@ func NewLoggerDefault(日志目录 string, 日志文件名 string, 日志级别 
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "T",                            // json时时间键
 		LevelKey:       "L",                            // json时日志等级键
-		NameKey:        "L",                            // json时日志记录器键
+		NameKey:        "N",                            // json时日志记录器键
 		CallerKey:      "C",                            // json时日志文件信息键
 		MessageKey:     "M",                            // json时日志消息键
 		StacktraceKey:  "S",                            // json时堆栈键
@@ -83,7 +83,7 @@ func NewLoggerDefault(日志目录 string, 日志文件名 string, 日志级别 
 func NewLogger(日志目录 string, 日志文件名 string, 日志级别 string, 日志最大文件大小 int, 日志最大文件数 int,
 	日志文件最大保存天天数 int, 日志文件是否压缩 bool, 服务名 string) *zap.Logger {
 	if len(日志目录) == 0 {
-		日志目录 = DEFAULT_LOGGER_FILEPATH
+		日志目录 = DefaultLoggerFilepath
 	}
 	日志文件路径 := 日志目录 + "/" + 日志文件名
 
@@ -104,7 +104,7 @@ func NewLogger(日志目录 string, 日志文件名 string, 日志级别 string,
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "T",                            // json时时间键
 		LevelKey:       "L",                            // json时日志等级键
-		NameKey:        "L",                            // json时日志记录器键
+		NameKey:        "N",                            // json时日志记录器键
 		CallerKey:      "C",                            // json时日志文件信息键
 		MessageKey:     "M",                            // json时日志消息键
 		StacktraceKey:  "S",                            // json时堆栈键

@@ -18,7 +18,7 @@ type wxDataCrypt struct {
 	sessionKey string
 }
 type watermark struct {
-	Appid     string `json:"appid"`
+	AppID     string `json:"appid"`
 	timestamp int64  `json:"timestamp"`
 }
 

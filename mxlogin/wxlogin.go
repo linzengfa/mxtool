@@ -18,15 +18,15 @@ import (
 )
 
 const (
-	WXLOGIN_RETURN_ERRCODE_KEY    = "errcode"
-	WXLOGIN_RETURN_ERRMSG_KEY     = "errmsg"
-	WXLOGIN_RETURN_OPENID_KEY     = "openid"
-	WXLOGIN_RETURN_SESSIONKEY_KEY = "session_key"
+	ReturnErrCodeKey = "errcode"
+	ReturnErrMsgKey  = "errmsg"
+	ReturnOpenIDKey  = "openid"
+	ReturnSessionKey = "session_key"
 )
 
 var (
-	wxlogin_param_error           = errors.New("wxlogin_param_error")
-	wxlogin_watermark_check_error = errors.New("encryptedData errors")
+	ErrLoginParamError    = errors.New("wxLogin param error")
+	ErrEncryptedDataError = errors.New("encryptedData errors")
 )
 
 type WXLogin struct {
@@ -77,7 +77,7 @@ type WXPhoneNumber struct {
 
 func New(appId, appSecret string) (wx *WXLogin, err error) {
 	if appId == "" || appSecret == "" {
-		err = wxlogin_param_error
+		err = ErrLoginParamError
 		return
 	}
 	return &WXLogin{appId, appSecret}, nil
@@ -113,8 +113,8 @@ func (wx *WXLogin) Login(encryptedData, iv, code string) (wxu *WXUserInfo, err e
 			return
 		}
 
-		if len(wxData.Appid) == 0 || wxData.Appid != wx.AppId {
-			err = wxlogin_watermark_check_error
+		if len(wxData.AppID) == 0 || wxData.AppID != wx.AppId {
+			err = ErrEncryptedDataError
 			return
 		}
 
@@ -166,8 +166,8 @@ func (wx *WXLogin) GetUserInfo(accessToken, openid string) (wxu *EncryptedData, 
 	if err != nil {
 		return
 	}
-	if _, ok := resultMap[WXLOGIN_RETURN_ERRCODE_KEY]; ok {
-		errmsg := fmt.Sprintf("GetUserInfo errors，errcode=%v,errmsg=%v", resultMap[WXLOGIN_RETURN_ERRCODE_KEY], resultMap[WXLOGIN_RETURN_ERRMSG_KEY])
+	if _, ok := resultMap[ReturnErrCodeKey]; ok {
+		errmsg := fmt.Sprintf("GetUserInfo errors，errcode=%v,errmsg=%v", resultMap[ReturnErrCodeKey], resultMap[ReturnErrMsgKey])
 		err = errors.New(errmsg)
 		return
 	}
@@ -219,16 +219,16 @@ func codeExchangeSessionkey(appId string, appSecret string, code string) (wxa *W
 	}
 
 	//code换取session_key失败
-	if _, ok := resultMap[WXLOGIN_RETURN_ERRCODE_KEY]; ok {
-		errmsg := fmt.Sprintf("codeExchangeSessionkey errors，errcode=%v,errmsg=%v", resultMap[WXLOGIN_RETURN_ERRCODE_KEY], resultMap[WXLOGIN_RETURN_ERRMSG_KEY])
+	if _, ok := resultMap[ReturnErrCodeKey]; ok {
+		errmsg := fmt.Sprintf("codeExchangeSessionkey errors，errcode=%v,errmsg=%v", resultMap[ReturnErrCodeKey], resultMap[ReturnErrMsgKey])
 		err = errors.New(errmsg)
 		return
 	}
-	if _, ok := resultMap[WXLOGIN_RETURN_SESSIONKEY_KEY]; !ok {
+	if _, ok := resultMap[ReturnSessionKey]; !ok {
 		err = errors.New("codeExchangeSessionkey errors,session_key does not exist")
 		return
 	}
-	if _, ok := resultMap[WXLOGIN_RETURN_OPENID_KEY]; !ok {
+	if _, ok := resultMap[ReturnOpenIDKey]; !ok {
 		err = errors.New("codeExchangeSessionkey errors,openid does not exist")
 		return
 	}
@@ -244,7 +244,7 @@ func buildExchangeUrl(appId string, appSecret string, code string) string {
 //加密数据( encryptedData )进行解密
 func (wx *WXLogin) DecryptPhoneNumber(encryptedData, iv, sessionKey string) (wpn *WXPhoneNumber, err error) {
 	if len(encryptedData) == 0 || len(iv) == 0 || len(sessionKey) == 0 {
-		err = wxlogin_param_error
+		err = ErrLoginParamError
 		return
 	}
 	fmt.Println("DecryptPhoneNumber sessionKey", sessionKey)
@@ -256,7 +256,7 @@ func (wx *WXLogin) DecryptPhoneNumber(encryptedData, iv, sessionKey string) (wpn
 	}
 
 	if len(wxData.PhoneNumber) == 0 {
-		err = wxlogin_watermark_check_error
+		err = ErrEncryptedDataError
 		return
 	}
 	fmt.Println("DecryptPhoneNumber success", wxData)
@@ -271,7 +271,7 @@ func (wx *WXLogin) DecryptPhoneNumber(encryptedData, iv, sessionKey string) (wpn
 //用户信息加密数据( encryptedData )进行解密
 func (wx *WXLogin) DecryptUserInfo(encryptedData, iv, sessionKey string) (wxu *EncryptedData, err error) {
 	if len(encryptedData) == 0 || len(iv) == 0 || len(sessionKey) == 0 {
-		err = wxlogin_param_error
+		err = ErrLoginParamError
 		return
 	}
 
@@ -281,8 +281,8 @@ func (wx *WXLogin) DecryptUserInfo(encryptedData, iv, sessionKey string) (wxu *E
 		fmt.Println("decryptUserInfoData error", err)
 		return
 	}
-	if len(wxData.Appid) == 0 || wxData.Appid != wx.AppId {
-		err = wxlogin_watermark_check_error
+	if len(wxData.AppID) == 0 || wxData.AppID != wx.AppId {
+		err = ErrEncryptedDataError
 		return
 	}
 	wxu = &EncryptedData{

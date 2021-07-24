@@ -7,24 +7,17 @@
 package tencent
 
 const (
-	METHOD_POST string = "POST"
-	METHOD_GET  string = "GET"
+	MethodPost string = "POST"
 )
 
 const (
-	ASR_URL                   = "https://aai.tencentcloudapi.com"
-	SR_ACTION                 = "SentenceRecognition"
-	SR_API_VERSION            = "2018-05-22"
-	SR_SERVICE_NAME           = "aai"
-	SIGNATURE_METHOD_SHA256   = "HmacSHA256"
-	SIGNATURE_METHOD_SHA1     = "HmacSHA1"
-	SUB_SERVICE_TYPE_SENTENCE = 2
-	ENGSERVICETYPE_16K        = "16k"
+	SubServiceTypeSentence = 2
+	EngServiceType16k      = "16k"
 )
 
 const (
-	SOURCE_TYPE_URL  = 0 //0：语音 URL
-	SOURCE_TYPE_DATA = 1 //1：语音数据（post body）
+	SourceTypeUrl  = 0 //0：语音 URL
+	SourceTypeData = 1 //1：语音数据（post body）
 )
 
 const (

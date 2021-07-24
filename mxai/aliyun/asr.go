@@ -17,10 +17,10 @@ import (
 
 func (mg *MGAi) FileASR(fileURL string) (content string, err error) {
 	if len(fileURL) == 0 {
-		err = MXAI_PARAM_ERROR
+		err = ErrRequestParam
 		return
 	}
-	client, err := sdk.NewClientWithAccessKey(REGION_ID, mg.AccessKeyId, mg.AccessKeySecret)
+	client, err := sdk.NewClientWithAccessKey(RegionId, mg.AccessKeyId, mg.AccessKeySecret)
 	if err != nil {
 		return
 	}
@@ -29,19 +29,19 @@ func (mg *MGAi) FileASR(fileURL string) (content string, err error) {
 	 */
 	postRequest := requests.NewCommonRequest()
 	postRequest.Domain = DOMAIN
-	postRequest.Version = API_VERSION
+	postRequest.Version = ApiVersion
 	postRequest.Product = PRODUCT
-	postRequest.ApiName = POST_REQUEST_ACTION
-	postRequest.Method = METHOD_POST
+	postRequest.ApiName = PostRequestAction
+	postRequest.Method = MethodPost
 	// 设置task，以JSON字符串的格式设置到请求中
 	mapTask := make(map[string]string)
-	mapTask[KEY_APP_KEY] = mg.AppKey
-	mapTask[KEY_FILE_LINK] = fileURL
+	mapTask[KeyAppKey] = mg.AppKey
+	mapTask[KeyFileLink] = fileURL
 	task, err := json.Marshal(mapTask)
 	if err != nil {
 		return
 	}
-	postRequest.QueryParams[KEY_TASK] = string(task)
+	postRequest.QueryParams[KeyTask] = string(task)
 
 	/**
 	* 提交录音文件识别请求，处理服务端返回的响应
@@ -54,7 +54,7 @@ func (mg *MGAi) FileASR(fileURL string) (content string, err error) {
 	postResponseContent := postResponse.GetHttpContentString()
 	fmt.Println(postResponseContent)
 	if postResponse.GetHttpStatus() != 200 {
-		err = MXAI_HTTP_REQUEST_ERROR
+		err = ErrHttpRequestError
 		return
 	}
 	var postMapResult map[string]interface{}
@@ -66,13 +66,13 @@ func (mg *MGAi) FileASR(fileURL string) (content string, err error) {
 	// 获取录音文件识别请求任务的ID，以供识别结果查询使用
 	var taskId string = ""
 	var statusText string = ""
-	statusText = postMapResult[KEY_STATUS_TEXT].(string)
+	statusText = postMapResult[KeyStatusText].(string)
 	if statusText == "SUCCESS" {
 		fmt.Println("录音文件识别请求成功响应!")
-		taskId = postMapResult[KEY_TASK_ID].(string)
+		taskId = postMapResult[KeyTaskId].(string)
 	} else {
 		fmt.Println("录音文件识别请求失败!")
-		err = MXAI_ASR_ERROR
+		err = ErrAsrErrors
 		return
 	}
 
@@ -81,11 +81,11 @@ func (mg *MGAi) FileASR(fileURL string) (content string, err error) {
 	 */
 	getRequest := requests.NewCommonRequest()
 	getRequest.Domain = DOMAIN
-	getRequest.Version = API_VERSION
+	getRequest.Version = ApiVersion
 	getRequest.Product = PRODUCT
-	getRequest.ApiName = GET_REQUEST_ACTION
-	getRequest.Method = METHOD_GET
-	getRequest.QueryParams[KEY_TASK_ID] = taskId
+	getRequest.ApiName = GetRequestAction
+	getRequest.Method = MethodGet
+	getRequest.QueryParams[KeyTaskId] = taskId
 
 	/**
 	 * 提交识别结果查询请求
@@ -101,7 +101,7 @@ func (mg *MGAi) FileASR(fileURL string) (content string, err error) {
 		fmt.Println("识别查询结果：", getResponseContent)
 		if getResponse.GetHttpStatus() != 200 {
 			fmt.Println("识别结果查询请求失败，Http错误码：", getResponse.GetHttpStatus())
-			err = MXAI_HTTP_REQUEST_ERROR
+			err = ErrHttpRequestError
 			break
 		}
 		var getMapResult map[string]interface{}
@@ -109,7 +109,7 @@ func (mg *MGAi) FileASR(fileURL string) (content string, err error) {
 		if err != nil {
 			break
 		}
-		statusText = getMapResult[KEY_STATUS_TEXT].(string)
+		statusText = getMapResult[KeyStatusText].(string)
 		if statusText == "RUNNING" || statusText == "QUEUEING" {
 			// 继续轮询
 			time.Sleep(3 * time.Second)
@@ -125,7 +125,7 @@ func (mg *MGAi) FileASR(fileURL string) (content string, err error) {
 		return
 	} else {
 		fmt.Println("录音文件识别失败！")
-		err = MXAI_ASR_FAILURE
+		err = ErrAsrFailure
 		return
 	}
 }

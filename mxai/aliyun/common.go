@@ -9,13 +9,13 @@ package aliyun
 import "errors"
 
 const (
-	METHOD_POST             string = "POST"
-	METHOD_GET              string = "GET"
+	MethodPost string = "POST"
+	MethodGet  string = "GET"
 )
 
 var (
-	MXAI_PARAM_ERROR        = errors.New("request param errors")
-	MXAI_ASR_ERROR          = errors.New("asr errors")
-	MXAI_ASR_FAILURE        = errors.New("asr failure")
-	MXAI_HTTP_REQUEST_ERROR = errors.New("http request errors")
+	ErrRequestParam     = errors.New("request param errors")
+	ErrAsrErrors        = errors.New("asr errors")
+	ErrAsrFailure       = errors.New("asr failure")
+	ErrHttpRequestError = errors.New("http request errors")
 )

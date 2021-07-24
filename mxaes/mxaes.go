@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	ENCRYPT_REQUEST_DATA_LEN_ERROR = errors.New("crypto/cipher: input not full blocks")
+	ErrInputNotFullBlocks = errors.New("crypto/cipher: input not full blocks")
 )
 
 //加密
@@ -32,7 +32,7 @@ func Encrypt(srcData, key, iv []byte) (encryptData []byte, err error) {
 	// 验证输入参数
 	// 必须为aes.Blocksize的倍数
 	if len(srcData)%aes.BlockSize != 0 {
-		return nil, ENCRYPT_REQUEST_DATA_LEN_ERROR
+		return nil, ErrInputNotFullBlocks
 	}
 
 	//初始向量IV

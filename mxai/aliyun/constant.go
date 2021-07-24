@@ -7,20 +7,19 @@
 package aliyun
 
 const (
-	REGION_ID           string = "cn-shanghai"
-	ENDPOINT_NAME       string = "cn-shanghai"
-	PRODUCT             string = "nls-filetrans"
-	DOMAIN              string = "filetrans.cn-shanghai.aliyuncs.com"
-	API_VERSION         string = "2018-08-17"
-	POST_REQUEST_ACTION string = "SubmitTask"
-	GET_REQUEST_ACTION  string = "GetTaskResult"
+	RegionId string = "cn-shanghai"
 
+	PRODUCT           string = "nls-filetrans"
+	DOMAIN            string = "filetrans.cn-shanghai.aliyuncs.com"
+	ApiVersion        string = "2018-08-17"
+	PostRequestAction string = "SubmitTask"
+	GetRequestAction  string = "GetTaskResult"
 )
 
 const (
-	KEY_APP_KEY     string = "app_key"
-	KEY_FILE_LINK   string = "file_link"
-	KEY_TASK        string = "Task"
-	KEY_TASK_ID     string = "TaskId"
-	KEY_STATUS_TEXT string = "StatusText"
+	KeyAppKey     string = "app_key"
+	KeyFileLink   string = "file_link"
+	KeyTask       string = "Task"
+	KeyTaskId     string = "TaskId"
+	KeyStatusText string = "StatusText"
 )

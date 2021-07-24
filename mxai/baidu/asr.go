@@ -32,26 +32,26 @@ func (mg *MGAi) GetAsrAccessToken() (token string, err error) {
 	if err != nil {
 		return
 	}
-	if _, ok := resultMap[MGOCR_RETURN_ERRCODE_KEY]; ok {
-		errmsg := fmt.Sprintf("GetAccessToken errors，errcode=%v,errmsg=%v", resultMap[MGOCR_RETURN_ERRCODE_KEY], resultMap[MGOCR_RETURN_ERRMSG_KEY])
+	if _, ok := resultMap[ReturnErrorCodeKey]; ok {
+		errmsg := fmt.Sprintf("GetAccessToken errors，errcode=%v,errmsg=%v", resultMap[ReturnErrorCodeKey], resultMap[ReturnErrorMsgKey])
 		err = errors.New(errmsg)
 		return
 	}
-	if _, ok := resultMap[MGOCR_RETURN_ACCESS_TOKEN_KEY]; !ok {
+	if _, ok := resultMap[ReturnAccessTokenKey]; !ok {
 		err = errors.New("GetAccessToken errors,access_token does not exist")
 		return
 	}
-	return resultMap[MGOCR_RETURN_ACCESS_TOKEN_KEY].(string), nil
+	return resultMap[ReturnAccessTokenKey].(string), nil
 }
 
 func (mg *MGAi) Speech(speechData string, speechDataLen int64, format, token string) (content string, err error) {
 	if len(speechData) == 0 || len(token) == 0 || len(format) == 0 || speechDataLen == 0 {
-		err = MXAI_PARAM_ERROR
+		err = MxAIParamError
 		return
 	}
 	requestParamMap := make(map[string]interface{})
 	requestParamMap["format"] = format
-	requestParamMap["rate"] = VOICE_RATE_16000
+	requestParamMap["rate"] = VoiceRate16000
 	requestParamMap["channel"] = 1
 	requestParamMap["cuid"] = mg.Cuid
 	requestParamMap["token"] = token
@@ -64,7 +64,7 @@ func (mg *MGAi) Speech(speechData string, speechDataLen int64, format, token str
 		return
 	}
 	fmt.Println("requestParam=", string(requestParam))
-	resp, err := http.Post(ASR_SPEED_URL, CONTENT_TYPE_JSON, strings.NewReader(string(requestParam)))
+	resp, err := http.Post(AsrSpeedURL, ContentTypeJson, strings.NewReader(string(requestParam)))
 	defer resp.Body.Close()
 	if err != nil {
 		return
@@ -79,11 +79,11 @@ func (mg *MGAi) Speech(speechData string, speechDataLen int64, format, token str
 		return
 	}
 
-	result, ok := resultMap[MGASR_RETURN_RESULT_KEY].(string)
+	result, ok := resultMap[ReturnResultKey].(string)
 	fmt.Println(result, ok)
 	if !ok || len(result) == 0 {
 		fmt.Println("speech resultMap=", resultMap)
-		err = MGASR_ASR_FAILURE
+		err = ErrAsrFailure
 		return
 	}
 	content = result

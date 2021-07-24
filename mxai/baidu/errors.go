@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	MGOCR_IDCARD_INFO_ERROR = errors.New("idCard info empty")
+	ErrIDCardInfoEmpty = errors.New("idCard info empty")
 
-	MGASR_ASR_FAILURE = errors.New("asr failure")
+	ErrAsrFailure = errors.New("asr failure")
 )
